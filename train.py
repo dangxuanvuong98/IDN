@@ -34,8 +34,8 @@ torch.manual_seed(1)
 
 cuda = torch.cuda.is_available()
 
-train_set = dataset(train=True)
-test_set = dataset(train=False)
+train_set = dataset(root='./kaggle_data/', train=True)
+test_set = dataset(root='./kaggle_data/', train=False)
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_set, batch_size=2*BATCH_SIZE, shuffle=False)
 

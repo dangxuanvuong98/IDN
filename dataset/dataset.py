@@ -15,19 +15,26 @@ class dataset(data.Dataset):
         
         with open(path, 'r') as f:
             lines = f.readlines()
+        images = dict()
 
         self.labels = []
         self.datas = []
         for line in lines:
             refer, test, label = line.split(',')
             # print(root + refer)
-            refer_img = cv2.imread(root + refer, 0)
-            refer_img = cv2.resize(refer_img, (220, 155), cv2.INTER_LINEAR)
-            test_img = cv2.imread(root + test, 0)
-            test_img = cv2.resize(test_img, (220, 155), cv2.INTER_LINEAR)
-            refer_img = refer_img.reshape(-1, refer_img.shape[0], refer_img.shape[1])
-            test_img = test_img.reshape(-1, test_img.shape[0], test_img.shape[1])
+            if refer not in images:
+                refer_img = cv2.imread(root + refer, 0)
+                refer_img = cv2.resize(refer_img, (220, 155), cv2.INTER_LINEAR)
+                refer_img = refer_img.reshape(-1, refer_img.shape[0], refer_img.shape[1])
+                images[refer] = refer_img
+            if test not in images:
+                test_img = cv2.imread(root + test, 0)
+                test_img = cv2.resize(test_img, (220, 155), cv2.INTER_LINEAR)
+                test_img = test_img.reshape(-1, test_img.shape[0], test_img.shape[1])
+                images[test] = test_img
 
+            refer_img = images[refer]
+            test_img = images[test]
             refer_test = np.concatenate((refer_img, test_img), axis=0)
             self.datas.append(refer_test)
             self.labels.append(int(label))

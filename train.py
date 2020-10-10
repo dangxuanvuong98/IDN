@@ -75,18 +75,18 @@ for epoch in range(1, EPOCHS + 1):
         writer.add_scalar(t+'/train_loss', loss.item(), iter_n)
         writer.add_scalar(t+'/train_accuracy', accuracy, iter_n)
         
-        if i % 100 == 0:
-            with torch.no_grad():
-                accuracys = []
-                for i_, (inputs_, labels_) in enumerate(test_loader):
-                    labels_ = labels_.float()
-                    if cuda:
-                        inputs_, labels_ = inputs_.cuda(), labels_.cuda()
-                    predicted_ = model(inputs_)
-                    accuracys.append(compute_accuracy(predicted_, labels_))
-                accuracy_ = sum(accuracys) / len(accuracys)
-                writer.add_scalar(t+'/test_accuracy', accuracy_, iter_n)
-            print('test loss:{:.6f}'.format(accuracy_))
+        # if i % 100 == 0:
+        #     with torch.no_grad():
+        #         accuracys = []
+        #         for i_, (inputs_, labels_) in enumerate(test_loader):
+        #             labels_ = labels_.float()
+        #             if cuda:
+        #                 inputs_, labels_ = inputs_.cuda(), labels_.cuda()
+        #             predicted_ = model(inputs_)
+        #             accuracys.append(compute_accuracy(predicted_, labels_))
+        #         accuracy_ = sum(accuracys) / len(accuracys)
+        #         writer.add_scalar(t+'/test_accuracy', accuracy_, iter_n)
+        #     print('test loss:{:.6f}'.format(accuracy_))
 
         iter_n += 1
 

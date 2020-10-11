@@ -26,7 +26,7 @@ def compute_accuracy(predicted, labels):
 
 
 BATCH_SIZE = 32
-EPOCHS = 1
+EPOCHS = 10
 LEARNING_RATE = 0.001
 
 np.random.seed(0)
@@ -77,9 +77,31 @@ for epoch in range(1, EPOCHS + 1):
         
         iter_n += 1
 
-        if i == 500:
-            torch.save(model.state_dict(), 'model.pth')
+        # if i == 500:
+        #     torch.save(model.state_dict(), 'model.pth')
 
         print('Epoch[{}/{}], iter {}, loss:{:.6f}, accuracy:{}'.format(epoch, EPOCHS, i, loss.item(), accuracy))
+
+    with torch.no_grad():
+    	train_acc = []
+    	for i, (inputs, labels) in enumerate(train_loader):
+    		labels = labels.float()
+    		if cuda:
+    			inputs, labels = inputs.cuda(), labels.cuda()
+    		predicted = model(inputs)
+    		train_acc.append(compute_accuracy(predicted, labels))
+    	train_acc = sum(train_acc) / len(train_acc)
+
+    	test_acc = []
+    	for i, (inputs, labels) in enumerate(test_loader):
+    		labels = labels.float()
+    		if cuda:
+    			inputs, labels = inputs.cuda(), labels.cuda()
+    		predicted = model(inputs)
+    		test_acc.append(compute_accuracy(predicted, labels))
+    	test_acc = sum(test_acc) / len(test_acc)
+
+    print('Epoch[{}/{}], train_acc: {}, test_acc: {}'.format(epoch, EPOCHS, train_acc, test_acc))
+    torch.save(model.state_dict(), 'model_{}.pth'.format(str(epoch).zfill(4)))
 
 writer.close()

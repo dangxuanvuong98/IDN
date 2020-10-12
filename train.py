@@ -102,6 +102,6 @@ for epoch in range(1, EPOCHS + 1):
     	test_acc = sum(test_acc) / len(test_acc)
 
     print('Epoch[{}/{}], train_acc: {}, test_acc: {}'.format(epoch, EPOCHS, train_acc, test_acc))
-    torch.save(model.state_dict(), 'model_{}.pth'.format(str(epoch).zfill(4)))
+    torch.save(model.state_dict(), 'model_{}_train_acc_{}_test_acc_{}.pth'.format(str(epoch).zfill(4)), train_acc, test_acc)
 
 writer.close()

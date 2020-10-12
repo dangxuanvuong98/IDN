@@ -2,3 +2,6 @@ __pycache__/
 kaggle_data/
 events.out.tfevents.*
 *.pth
+*.png
+*.jpg
+*.tif

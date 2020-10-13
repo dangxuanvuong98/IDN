@@ -14,10 +14,10 @@ model = net()
 if cuda:
     model = model.cuda()
 model.eval()
-model.load_state_dict(torch.load('model_0001_train_acc_0.9903109452736318_test_acc_0.9427083333333334.pth'))
+model.load_state_dict(torch.load('model_0003_train_acc_1.0000_test_acc_0.9801.pth'))
 
-refer = 'NFI-00101001_real1.png'
-test = 'NFI-00101001_real2.png'
+refer = 'data_signature/user1/NFI-00101001_real1.png'
+test = 'data_signature/user1/NFI-00101001_fake2.png'
 
 refer_img = cv2.imread(refer, 0)
 refer_img = cv2.resize(refer_img, (220, 155), cv2.INTER_LINEAR)
@@ -34,4 +34,5 @@ if cuda:
 	refer_test = refer_test.cuda()
 
 predicted = model(refer_test)
+predicted = [predicted[i].item() for i in range(3)]
 print(predicted)
